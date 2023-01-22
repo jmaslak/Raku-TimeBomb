@@ -7,7 +7,7 @@
   ],
   "depends": [
   ],
-  "description": "Trait to provide forced deprecation of Raku code",
+  "description": "Trait to provide forced deprecation of Raku Code",
   "license": "Artistic-2.0",
   "name": "TimeBomb",
   "perl": "6.c",
