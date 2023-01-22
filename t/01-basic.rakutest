@@ -1,0 +1,41 @@
+use v6;
+use Test;
+
+#
+# Copyright © 2023 Joelle Maslak
+# All Rights Reserved - See License
+#
+
+use TimeBomb;
+
+subtest 'Compiletime Timebomb', sub {
+    lives-ok { EVAL 'sub foo() is compile-until<9999-12-31> { … }' }, "Timebomb in the future is acceptable";
+    dies-ok  { EVAL 'sub foo() is compile-until<0001-01-01> { … }' }, "Timebomb in the past is unacceptable";
+
+    throws-like 'sub foo() is compile-until<0001-01-01> {…}',
+        X::TimeBomb::Expired,
+        "Timebomb throws proper exception",
+        :message("Routine foo will not compile after 0001-01-01"),
+        :until("0001-01-01"),
+    ;
+
+    is EVAL('sub foo() is compile-until<9999-12-31> { 42 }; foo'), 42, "Untriggered bomb returns proper result";
+}
+
+subtest 'Runtime Timebomb', sub {
+    lives-ok { EVAL 'sub foo() is run-until<9999-12-31> { 42 }; foo' }, "Timebomb in the future is acceptable";
+    lives-ok { EVAL 'sub foo() is run-until<0000-01-01> { … }' }, "Timebomb compiles okay";
+    dies-ok  { EVAL 'sub foo() is run-until<0000-01-01> { 42 }; foo' }, "Timebomb in the past is unacceptable";
+    
+    throws-like 'sub foo() is run-until<0001-01-01> {42}; foo',
+        X::TimeBomb::Expired,
+        "Timebomb throws proper exception",
+        :message("Routine foo will not execute after 0001-01-01"),
+        :until("0001-01-01"),
+    ;
+
+    is EVAL('sub foo() is compile-until<9999-12-31> { 42 }; foo'), 42, "Untriggered bomb returns proper result";
+}
+
+done-testing;
+

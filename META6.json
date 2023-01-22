@@ -1,0 +1,25 @@
+{
+  "auth": "zef:jmaslak",
+  "authors": [
+    "Joelle Maslak"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+  ],
+  "description": "Trait to provide forced deprecation of Raku code",
+  "license": "Artistic-2.0",
+  "name": "TimeBomb",
+  "perl": "6.c",
+  "provides": {
+    "TimeBomb": "lib/TimeBomb.rakumod"
+  },
+  "resources": [
+  ],
+  "source-url": "https://github.com/jmaslak/Raku-TimeBomb.git",
+  "tags": [
+  ],
+  "test-depends": [
+  ],
+  "version": "0.0.0"
+}
